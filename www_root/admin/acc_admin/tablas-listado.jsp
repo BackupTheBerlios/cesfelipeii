@@ -39,12 +39,24 @@
 		canal = DriverManager.getConnection(url,usuarioBD,claveBD);
 		instruccion = canal.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
 
-		/* OJO !!!!! Con "select * ..." NO se pueden modificar los resultsets !!!!!!!
-		   Hay que cambiar la sentencia con un alias o especificando los campos. */
-		// MySQL:
-		String sql="select * from " + p_tabla;
-		// Oracle:
-		// String sql="select t.* from " + p_tabla + " t";
+		String sql = null;
+		if (sistema.equals("mysql"))
+		{
+			// ¡MySQL: No funciona como en oracle!
+			sql="select * from " + p_tabla;
+		}
+		else if (sistema.equals("oracle"))
+		{
+			/* OJO !!!!! Con "select * ..." NO se pueden modificar los resultsets !!!!!!!
+			   Hay que cambiar la sentencia con un alias o especificando los campos. */
+			// Oracle:
+			sql="select t.* from " + p_tabla + " t";
+		}
+		else // Arquitectura no implementada. Lanzamos excepción:
+		{
+			volver="../index.htm";
+			throw new Exception("Sistema de base de datos " + sistema + " no implementado.");
+		}
 
 		registros = instruccion.executeQuery(sql);
 		ResultSetMetaData rsmd = registros.getMetaData();
@@ -88,7 +100,7 @@
 
 		int tamano_total = 0;
 		out.println("<h3>" + p_tabla + "</h3>");
-		out.println("[ <a href=\"default.jsp\">Volver</a> ]<br><br>");
+		out.println("[ <a href=\"" + volver + "\">Volver</a> ]<br><br>");
 		out.println("<table cellpadding=\"0\" cellspacing=\"0\" border=\"1\" style=\"width: 100%; text-align: left;\">");
 		for (int i=1; i<=columnas; i++)
 		{
@@ -132,10 +144,11 @@
 	catch(Exception e)
 	{
 		out.print("<h3><font color=\"#FF0000\">Excepción: " + e.getMessage() + "</font></h3>");
-		out.print("[ <a href=\"default.jsp\">Volver</a> ]<br><br>");
+		// Creo que la siguiente línea no es necesaria.
+		//out.print("[ <a href=\"" + volver + "\">Volver</a> ]<br><br>");
 	};
 
-	out.println("[ <a href=\"default.jsp\">Volver</a> ]<br><br>");
+	out.println("[ <a href=\"" + volver + "\">Volver</a> ]<br><br>");
 %>
 </center>
 </BODY>

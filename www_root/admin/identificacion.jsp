@@ -7,7 +7,6 @@
 </HEAD>
 <BODY>
 <%
-// Pruebas CVS para chema
 try {
 
    // Tomamos del objeto request el nombre de usuario y la contraseña

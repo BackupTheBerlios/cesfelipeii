@@ -46,14 +46,33 @@
 		// Muestra la lista de tablas
 		DatabaseMetaData dmd = canal.getMetaData();
 		String[] tipos = {"TABLE"};
-		ResultSet tablas = dmd.getTables(null,null,null,tipos);
+		ResultSet tablas = null;
 
-		// Obtenemos todas las tablas del usuario (BD en Oracle)
-		// ResultSet tablas = stmt.executeQuery("SELECT TABLE_NAME FROM USER_TABLES ORDER BY TABLE_NAME");
+		// Columna correspondiente al nombre de la tabla.
+		// Si al final la implementación entre una base de datos u otra cambia, la columna cambiará.
+		int columna = 0;
+
+		if (sistema.equals("mysql"))
+		{
+			tablas = dmd.getTables(null,null,null,tipos);
+			columna = 3;
+		}
+		else if (sistema.equals("oracle"))
+		{
+			// Prueba para ver si funciona con Oracle.
+			tablas = dmd.getTables(null,null,null,tipos);
+			columna = 3;
+			// Obtenemos todas las tablas del usuario (BD en Oracle)
+			// tablas = stmt.executeQuery("SELECT TABLE_NAME FROM USER_TABLES ORDER BY TABLE_NAME");
+		}
+		else // Lanzamos excepción. La arquitectura no está implementada:
+		{
+			throw new Exception("La arquitectura de base de datos " + sistema + " no está implementada.");
+		}
 
 		while (tablas.next())
 		{
-			out.print("<a href=\"tablas-listado.jsp?TABLA=" + tablas.getString(3) + "\">" + tablas.getString(3) + "</a><br>");
+			out.print("<a href=\"tablas-listado.jsp?TABLA=" + tablas.getString(columna) + "\">" + tablas.getString(columna) + "</a><br>");
 		}
 		tablas.close();
 		canal.close();

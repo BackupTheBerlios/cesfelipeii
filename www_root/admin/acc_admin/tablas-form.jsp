@@ -17,11 +17,24 @@
 	if (p_fila==null) p_fila="0";
 	int fila = Integer.parseInt(p_fila);
 
+	// Página de vuelta por defecto.
+	String volver = "tablas-listado.jsp?TABLA=" + p_tabla;
+
 	try
 	{
+		// En primer lugar aseguramos que el usuario está identificado:
+		Integer idUsuario  = (Integer)session.getAttribute("idUsuario");
+		String clave       = (String) session.getAttribute("clave");
+		String tipoUsuario = (String) session.getAttribute("tipoUsuario");
+		if (idUsuario == null || clave == null || tipoUsuario == null || !tipoUsuario.equals("ADMIN"))
+		{
+			volver="../index.htm";
+			throw new Exception("Zona restringida: debe identificarse.");
+		}
+
 		if (p_tabla==null || p_modo==null) throw new Exception("Parámetros incorrectos.");
 		out.print("<h3>" + p_tabla + "</h3>");
-		out.print("[ <a href=\"tablas-listado.jsp?TABLA=" + p_tabla +"\">Volver</a> ]<br><br>");
+		out.print("[ <a href=\"" + volver + "\">Volver</a> ]<br><br>");
 
 		Connection canal = null;
 		ResultSet registros = null;
@@ -62,12 +75,16 @@
 			int ancho = rsmd.getColumnDisplaySize(i);
 			out.println("<td style=\"vertical-align: top;\">" + rsmd.getColumnName(i) + "</td>");
 			out.print("<td style=\"vertical-align: top;\">");
+
+			String contenido = registros.getString(i);
+			if (contenido.equals("null")) contenido="";
+
 			if (ancho>50) {
-				out.print("<textarea name=\"" + rsmd.getColumnName(i) + "\" cols=\"50\" rows=\"" + ancho/50 + "\">" + registros.getString(i) + "</textarea>");
+				out.print("<textarea name=\"" + rsmd.getColumnName(i) + "\" cols=\"50\" rows=\"" + ancho/50 + "\">" + contenido + "</textarea>");
 			}
 			else
 			{
-				out.print("<input type=\"text\" name=\"" + rsmd.getColumnName(i) + "\" size=\"" + rsmd.getColumnDisplaySize(i) + "\" value=\"" + registros.getString(i) + "\">");
+				out.print("<input type=\"text\" name=\"" + rsmd.getColumnName(i) + "\" size=\"" + rsmd.getColumnDisplaySize(i) + "\" value=\"" + contenido + "\">");
 			}
 			out.println("</td>");
 			out.println("</tr>");
@@ -89,7 +106,7 @@
 	{
 		out.print("<h3>Excepción: " + e.getMessage() + "</h3>");
 	};
-	out.print("[ <a href=\"tablas-listado.jsp?TABLA=" + p_tabla +"\">Volver</a> ]<br><br>");
+	out.print("[ <a href=\"" + volver + "\">Volver</a> ]<br><br>");
 %>
 </center>
 </body>
