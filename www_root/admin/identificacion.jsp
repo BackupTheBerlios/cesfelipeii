@@ -74,7 +74,7 @@ try {
             // Ésta ventana vuelve a default.jsp
             window.location = "../default.jsp";
             // Y se abre una ventana nueva con la parte de administración
-            window.open("./acc_admin/");
+            window.location("./acc_admin/default.jsp");
          </script>
       <%
       } else {
