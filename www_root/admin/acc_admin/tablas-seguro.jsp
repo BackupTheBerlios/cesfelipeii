@@ -5,8 +5,8 @@
 <%
 	// Salto de linea:
 	String salto = "\n";
-    
-	response.setHeader("Content-disposition","filename=" + url + ".sql");
+
+	response.setHeader("Content-disposition","filename=backup.sql");
     response.setHeader("Content-type","application/octetstream");
     response.setHeader("Pragma","no-cache");
     response.setHeader("Expires","0");
@@ -19,9 +19,6 @@
         }
     }
 
-	// Página de vuelta. En la página aparecen dos vínculos [Volver]. En esta cadena se almacena el destino.
-	String volver = "default.jsp";
-
 	try {
 		// En primer lugar aseguramos que el usuario está identificado:
 		Integer idUsuario  = (Integer)session.getAttribute("idUsuario");
@@ -29,7 +26,6 @@
 		String tipoUsuario = (String) session.getAttribute("tipoUsuario");
 		if (idUsuario == null || clave == null || tipoUsuario == null || !tipoUsuario.equals("ADMIN"))
 		{
-			volver="../index.htm";
 			throw new Exception("Zona restringida: debe identificarse.");
 		}
 

@@ -34,7 +34,7 @@ try {
   String tipoUsuario;				// Tipo de usuario
 
   try {
-     // Cargar el controlador dela BD
+     // Cargar el controlador de la BD
      Class.forName(driver);
   } catch (java.lang.ClassNotFoundException e) {
       %>
@@ -74,7 +74,7 @@ try {
             // Ésta ventana vuelve a default.jsp
             window.location = "../default.jsp";
             // Y se abre una ventana nueva con la parte de administración
-            window.location("./acc_admin/default.jsp");
+            window.open("./acc_admin/default.jsp");
          </script>
       <%
       } else {
