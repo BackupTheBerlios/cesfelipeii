@@ -8,7 +8,7 @@
 <BODY>
 <%
 try {
-
+// Prueba chema en el CVS
    // Tomamos del objeto request el nombre de usuario y la contraseña
    String login = request.getParameter("usuario");
    String clave = request.getParameter("passwd");
