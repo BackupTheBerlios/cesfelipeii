@@ -86,6 +86,7 @@
 
 %>
 <br><br>[ <a href="../">Volver</a> ]
+<br><br>[ <a href="tablas-seguro.jsp">Copia de Seguridad</a> ]
 </center>
 </BODY>
 

@@ -77,7 +77,7 @@
 			out.print("<td style=\"vertical-align: top;\">");
 
 			String contenido = registros.getString(i);
-			if (contenido.equals("null")) contenido="";
+			if (contenido == null) contenido="";
 
 			if (ancho>50) {
 				out.print("<textarea name=\"" + rsmd.getColumnName(i) + "\" cols=\"50\" rows=\"" + ancho/50 + "\">" + contenido + "</textarea>");
